@@ -25,7 +25,9 @@ public class TestDemo {
     @Test
     public void testGetChapterDetail(){
         AbstractChapterDetailSpider detailSpider=new DefaultChapterDetailSpider();
-        ChapterDetail detail = detailSpider.getDetailByUrl("http://book.zongheng.com/chapter/637210/35372502.html");
-        System.out.println(detail);
+        //ChapterDetail detail = detailSpider.getDetailByUrl("http://book.zongheng.com/chapter/637210/35372502.html");
+        ChapterDetail detail = detailSpider.getDetailByUrl("http://www.woquge.com/38_38857/15139165.html");
+
+        System.out.println(detail.getContent());
     }
 }

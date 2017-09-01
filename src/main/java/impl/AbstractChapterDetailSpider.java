@@ -5,6 +5,8 @@ import interfaces.IChapterDetailSpider;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.parser.Tag;
+import org.jsoup.select.Elements;
 import util.SendRequestUtil;
 import util.XmlParseUtil;
 
@@ -25,7 +27,7 @@ public abstract class AbstractChapterDetailSpider implements IChapterDetailSpide
         try {
             ChapterDetail detail = new ChapterDetail();
             String result = SendRequestUtil.getInstance().crawl(url, XmlParseUtil.getSiteByUrl(url).get("charset"));
-            result.replace("")
+            result=result.replace("&nbap;"," ");
             Document document = Jsoup.parse(result);
             document.setBaseUri(url);
             String contSel = XmlParseUtil.getSiteByUrl(url).get("chapter-detail-content-select");
@@ -57,8 +59,14 @@ public abstract class AbstractChapterDetailSpider implements IChapterDetailSpide
     }
 
     private Element getBySelector(Document document, String selector) {
+        Element p = new Element(Tag.valueOf("p"), "");
+        p.text(document+" 中没有找到匹配数据!");
         String[] selects = selector.split(",");
         selects = parseSelector(selects);
-        return document.select(selects[0]).get(Integer.parseInt(selects[1]));
+        Elements eles = document.select(selects[0]);
+        if(eles.size()>0){
+            return eles.get(Integer.parseInt(selects[1]));
+        }
+        return p;
     }
 }

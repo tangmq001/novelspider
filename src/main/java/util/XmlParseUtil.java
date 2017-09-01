@@ -22,7 +22,7 @@ public class XmlParseUtil{
     private static void init(){
         SAXReader reader=new SAXReader();
         try {
-            Document document = reader.read(new File("E:/git/novelspider/src/main/resources/config/novelSpider-config.xml"));
+            Document document = reader.read(new File("E:/workspace/novelspider/src/main/resources/config/novelSpider-config.xml"));
             Element root = document.getRootElement();
             List<Element> eles = root.elements("site");
             for (Element ele : eles) {
