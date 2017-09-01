@@ -1,0 +1,26 @@
+<sites>
+    <site>
+        <title>笔趣阁</title>
+        <book-name>一念永恒</book-name>
+        <url>http://www.woquge.com</url>
+        <charset>GBK</charset>
+        <chapter-list-select>#list dd a</chapter-list-select>
+        <chapter-detail-content-select>#content</chapter-detail-content-select>
+        <chapter-detail-title-select>h1</chapter-detail-title-select>
+        <chapter-detail-prev-select>.bottem2 a,1</chapter-detail-prev-select>
+        <chapter-detail-next-select>.bottem2 a,3</chapter-detail-next-select>
+    </site>
+    <site>
+        <title>纵横中文网</title>
+        <book-name>大灾灭</book-name>
+        <url>http://www.zongheng.com</url>
+        <charset>UTF-8</charset>
+        <chapter-list-select>#chapterListPanel td a</chapter-list-select>
+        <chapter-detail-content-select>#readerFs</chapter-detail-content-select>
+        <chapter-detail-title-select>h1 em</chapter-detail-title-select>
+        <chapter-detail-prev-select>#prevChapterButton</chapter-detail-prev-select>
+        <chapter-detail-next-select>#nextChapterButton</chapter-detail-next-select>
+    </site>
+
+
+</sites>
