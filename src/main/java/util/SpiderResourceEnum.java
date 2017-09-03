@@ -6,7 +6,7 @@ package util;
  * @Note:
  */
 public enum SpiderResourceEnum {
-    BIQUGE(1, "woquge"), ZHONGHENGZHONGWEN(2, "zongheng");
+    BIQUGE(1, "woquge"), ZHONGHENGZHONGWEN(2, "zongheng"),BIXIAWENXUE(3,"bxwx9");
     private int id;
     private String keyWord;
 
@@ -39,6 +39,8 @@ public enum SpiderResourceEnum {
                 return BIQUGE;
             case 2:
                 return ZHONGHENGZHONGWEN;
+            case 3:
+                return BIXIAWENXUE;
             default:
                 throw new RuntimeException("id="+id+",不在搜索范围内");
         }

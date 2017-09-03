@@ -8,6 +8,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
+import org.jsoup.helper.StringUtil;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -34,7 +35,7 @@ public abstract class AbstractChapterSpider implements IChapterSpider {
         try {
             String result = SendRequestUtil.getInstance().crawl(url,XmlParseUtil.getSiteByUrl(url).get("charset"));
             Document document = Jsoup.parse(result);
-            document.setBaseUri("url");
+            document.setBaseUri(url);
             Elements els = document.select(XmlParseUtil.getSiteByUrl(url).get("chapter-list-select"));
             ArrayList<Chapter> chapters = new ArrayList();
             for (Element e : els) {

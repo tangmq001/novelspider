@@ -11,23 +11,22 @@ import util.SendRequestUtil;
 import util.XmlParseUtil;
 
 /**
- * @Author:tangmq
- * @Date:2017/8/31
- * @Note:
+ * Created by 唐明巧 on2017/9/3.
+ *
+ * @Note：
  */
-public abstract class AbstractChapterDetailSpider implements IChapterDetailSpider {
+public class BXWXChapterSpiderDetail implements IChapterDetailSpider {
     /**
      * 根据url 获得章节详情对象
      *
      * @param url
      * @return
      */
-    @Override
     public ChapterDetail getDetailByUrl(String url) {
         try {
             ChapterDetail detail = new ChapterDetail();
-            String result = SendRequestUtil.getInstance().crawl(url, XmlParseUtil.getSiteByUrl(url).get("charset"));
-            result=result.replace("&nbsp;"," ");
+            String result = SendRequestUtil.getInstance().crawl(url, "GBK");
+            result = result.replace("&nbsp;", " ");
             Document document = Jsoup.parse(result);
             document.setBaseUri(url);
             String contSel = XmlParseUtil.getSiteByUrl(url).get("chapter-detail-content-select");
@@ -60,11 +59,11 @@ public abstract class AbstractChapterDetailSpider implements IChapterDetailSpide
 
     private Element getBySelector(Document document, String selector) {
         Element p = new Element(Tag.valueOf("p"), "");
-        p.text(document+" 中没有找到匹配数据!");
+        p.text(document + " 中没有找到匹配数据!");
         String[] selects = selector.split(",");
         selects = parseSelector(selects);
         Elements eles = document.select(selects[0]);
-        if(eles.size()>0){
+        if (eles.size() > 0) {
             return eles.get(Integer.parseInt(selects[1]));
         }
         return p;
