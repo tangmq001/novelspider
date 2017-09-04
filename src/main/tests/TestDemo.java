@@ -1,11 +1,14 @@
+import config.ConfigurationDownload;
 import entity.Chapter;
 import entity.ChapterDetail;
 import impl.*;
 import interfaces.IChapterDetailSpider;
 import interfaces.IChapterSpider;
+import interfaces.IDownloadNoval;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @Author:tangmq
@@ -33,6 +36,17 @@ public class TestDemo {
     public void testBXWXChapterSpider(){
         IChapterDetailSpider detailSpider=new BXWXChapterSpiderDetail();
         ChapterDetail detail = detailSpider.getDetailByUrl("http://www.bxwx9.org/b/5/5169/7393369.html");
-        System.out.println(detail);
+        System.out.println(detail.getContent());
+    }
+    @Test
+    public void testDownload(){
+        IDownloadNoval downlaod = new DownloadNovalImpl();
+        ConfigurationDownload config = new ConfigurationDownload();
+        config.setPath("E:/novelSpider/bxwx/frxxz");
+        try {
+            downlaod.download("http://www.bxwx9.org/b/5/5169/index.html",config);
+        } catch (ExecutionException |InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
