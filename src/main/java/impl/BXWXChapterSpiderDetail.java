@@ -26,11 +26,11 @@ public class BXWXChapterSpiderDetail implements IChapterDetailSpider {
         try {
             ChapterDetail detail = new ChapterDetail();
             String result = SendRequestUtil.getInstance().crawl(url, "GBK");
-            result = result.replace("&nbsp;", " ");
+            result = result.replace("&nbsp;", " ").replace("<br />","${line}").replace("<br/>","${line}");
             Document document = Jsoup.parse(result);
             document.setBaseUri(url);
             String contSel = XmlParseUtil.getSiteByUrl(url).get("chapter-detail-content-select");
-            detail.setContent(getBySelector(document, contSel).text());//存储内容
+            detail.setContent(getBySelector(document, contSel).text().replace("${line}","\n"));//存储内容
             String titSel = XmlParseUtil.getSiteByUrl(url).get("chapter-detail-title-select");
             detail.setTitle(getBySelector(document, titSel).text());//存储标题
             String provSel = XmlParseUtil.getSiteByUrl(url).get("chapter-detail-prev-select");

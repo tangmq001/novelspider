@@ -71,7 +71,7 @@ public class DownloadNovalImpl implements IDownloadNoval {
         @Override
         public String call() throws Exception {
             try (
-                    PrintWriter writer = new PrintWriter(new File(path));
+                    PrintWriter writer = new PrintWriter(new File(path),"UTF-8")
             ) {
                 for (Chapter chapter : list) {
                     IChapterDetailSpider chapterDetailSpider = ChapterSpiderDetailFactory.getInstanceByUrl(chapter.getUrl());

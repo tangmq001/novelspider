@@ -26,7 +26,7 @@ public class SendRequestUtil {
     }
     public String crawl(String url,String charset) throws Exception {
         try (CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-             CloseableHttpResponse httpResponse = httpClient.execute(new HttpGet(url))) {
+             CloseableHttpResponse httpResponse = httpClient.execute(new NovelSpiderHttpGet(url))) {
             String result = EntityUtils.toString(httpResponse.getEntity(), charset);
             return result;
         } catch (Exception e) {

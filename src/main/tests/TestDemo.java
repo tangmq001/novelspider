@@ -6,6 +6,8 @@ import interfaces.IChapterDetailSpider;
 import interfaces.IChapterSpider;
 import interfaces.IDownloadNoval;
 import org.junit.Test;
+import util.MultiFileMergeUtil;
+import util.NovelSpiderHttpGet;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -48,5 +50,9 @@ public class TestDemo {
         } catch (ExecutionException |InterruptedException e) {
             e.printStackTrace();
         }
+    }
+    @Test
+    public void testMerge(){
+        MultiFileMergeUtil.multiFileMerge("E:/novelSpider/bxwx/frxxz","",false);
     }
 }
