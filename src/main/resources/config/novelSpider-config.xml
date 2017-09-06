@@ -2,6 +2,7 @@
     <site>
         <title>笔趣阁</title>
         <url>http://www.woquge.com</url>
+        <bookName>#info h1</bookName>
         <charset>GBK</charset>
         <chapter-list-select>#list dd a</chapter-list-select>
         <chapter-detail-content-select>#content</chapter-detail-content-select>
@@ -12,6 +13,7 @@
     <site>
         <title>纵横中文网</title>
         <url>http://www.zongheng.com</url>
+        <bookName>.txt h1</bookName>
         <charset>UTF-8</charset>
         <chapter-list-select>#chapterListPanel td a</chapter-list-select>
         <chapter-detail-content-select>#readerFs</chapter-detail-content-select>
@@ -22,6 +24,7 @@
     <site>
         <title>笔下文学</title>
         <url>http://www.bxwx9.org</url>
+        <bookName>.roadl a,2</bookName>
         <charset>UTF-8</charset>
         <detail-charset>GBK</detail-charset>
         <chapter-list-select>#TabCss dd a</chapter-list-select>

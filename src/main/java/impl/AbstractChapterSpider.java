@@ -1,6 +1,7 @@
 package impl;
 
 import entity.Chapter;
+import entity.Novel;
 import interfaces.IChapterSpider;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -11,6 +12,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.helper.StringUtil;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 import util.SendRequestUtil;
 import util.XmlParseUtil;
@@ -31,11 +33,14 @@ public abstract class AbstractChapterSpider implements IChapterSpider {
      * @param url
      * @return
      */
-    public List<Chapter> getsChapter(String url) {
+    public Novel getsChapter(String url) {
+        Novel novel = new Novel();
         try {
-            String result = SendRequestUtil.getInstance().crawl(url,XmlParseUtil.getSiteByUrl(url).get("charset"));
+            String result = SendRequestUtil.getInstance().crawl(url, XmlParseUtil.getSiteByUrl(url).get("charset"));
             Document document = Jsoup.parse(result);
             document.setBaseUri(url);
+            String s = XmlParseUtil.getSiteByUrl(url).get("bookName");
+            novel.setName(getBySelector(document,s).text());
             Elements els = document.select(XmlParseUtil.getSiteByUrl(url).get("chapter-list-select"));
             ArrayList<Chapter> chapters = new ArrayList();
             for (Element e : els) {
@@ -44,10 +49,37 @@ public abstract class AbstractChapterSpider implements IChapterSpider {
                 chapter.setUrl(e.absUrl("href"));
                 chapters.add(chapter);
             }
-            return chapters;
+            novel.setList(chapters);
+            return novel;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
     }
+    private String[] parseSelector(String[] strs) {
+        String[] strN = new String[2];
+        try {
+            if (strs.length == 1) {
+                strN[0] = strs[0];
+                strN[1] = "0";
+                return strN;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return strs;
+    }
+
+    private Element getBySelector(Document document, String selector) {
+        Element p = new Element(Tag.valueOf("p"), "");
+        p.text(document+" 中没有找到匹配数据!");
+        String[] selects = selector.split(",");
+        selects = parseSelector(selects);
+        Elements eles = document.select(selects[0]);
+        if(eles.size()>0){
+            return eles.get(Integer.parseInt(selects[1]));
+        }
+        return p;
+    }
+
 }

@@ -1,5 +1,6 @@
 package util;
 
+import entity.Novel;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.*;
@@ -16,18 +17,21 @@ public class MultiFileMergeUtil {
 
     /**
      * @param path          目录路径
-     * @param multiFilePath 合并后的文件存储地址
+     * @param novelName 小说名
      * @param isDelAll      是否删除各个小文件
      * @return 返回合并后文件路径
      */
-    public static String multiFileMerge(String path, String multiFilePath, boolean isDelAll) {
+    public static String multiFileMerge(String path, String novelName, boolean isDelAll) {
         //如果为空,给个默认文件名
-        multiFilePath = StringUtils.isBlank(multiFilePath) ? path + "/merge.txt" : multiFilePath;
+        String multiFilePath =  path +"/"+ novelName+".txt";
         //获得文件列表
         File[] files = new File(path).listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
                 if (name.endsWith(".txt")) {
+                    if(name.contains(novelName)){
+                        return false;
+                    }
                     return true;
                 }
                 return false;
@@ -39,7 +43,7 @@ public class MultiFileMergeUtil {
             public int compare(File o1, File o2) {
                 int fromIndex = Integer.parseInt(o1.getName().split("-")[0]);
                 int toIndex = Integer.parseInt(o2.getName().split("-")[0]);
-                if (fromIndex < toIndex) {
+                if (fromIndex > toIndex) {
                     return 1;
                 } else if (fromIndex == toIndex) {
                     return 0;

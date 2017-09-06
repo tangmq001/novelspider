@@ -1,6 +1,7 @@
 package interfaces;
 
 import entity.Chapter;
+import entity.Novel;
 
 import java.util.List;
 
@@ -15,5 +16,5 @@ public interface IChapterSpider {
      * @param url
      * @return
      */
-   List<Chapter> getsChapter(String url);
+   Novel getsChapter(String url);
 }

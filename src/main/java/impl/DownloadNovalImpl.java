@@ -3,10 +3,13 @@ package impl;
 import config.ConfigurationDownload;
 import entity.Chapter;
 import entity.ChapterDetail;
+import entity.Novel;
 import interfaces.IChapterDetailSpider;
 import interfaces.IDownloadNoval;
 import util.ChapterSpiderDetailFactory;
 import util.ChapterSpiderFactory;
+import util.MultiFileMergeUtil;
+import util.SpiderResourceEnum;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +28,8 @@ import java.util.concurrent.*;
 public class DownloadNovalImpl implements IDownloadNoval {
     @Override
     public String download(String url, ConfigurationDownload config) {
-        List<Chapter> chapters = ChapterSpiderFactory.getInstanceByUrl(url).getsChapter(url);
+        Novel novel = ChapterSpiderFactory.getInstanceByUrl(url).getsChapter(url);
+        List<Chapter> chapters = novel.getList();
         //1 获得章节列表分配给每个线程
         //0-99;100-199...2000-2010
         int size = config.getSize();
@@ -42,42 +46,54 @@ public class DownloadNovalImpl implements IDownloadNoval {
         //每个线程下载后存放本地
         ExecutorService service = Executors.newFixedThreadPool(maxSize);
         Set<String> keys = mapChapter.keySet();
-        List<Future<String>> futures=new ArrayList<>();
+        List<Future<String>> futures = new ArrayList<>();
+        String savePath=config.getPath()+"/"+ SpiderResourceEnum.getEnumByUrl(url).getKeyWord()+"/"+novel.getName();
+        new File(savePath).mkdirs();
         for (String key : keys) {
-            Future f = service.submit(new DownloadThread( mapChapter.get(key),config.getPath()+"/"+key+".text"));
+            Future f = service.submit(new DownloadThread(mapChapter.get(key), savePath + "/" + key + ".txt",config.getTryTimes()));
             futures.add(f);
         }
         service.shutdown();//在最后一个线程执行完毕后,连接池关闭,不然会造成内存溢出
         for (Future<String> future : futures) {
             try {
-                System.out.println(future.get()+",下载完成!");  //future.get()输出的是call()返回的值,
-                                                                // 线程只有在call()有了返回值才会继续执行
+                System.out.println(future.get() + ",下载完成!");  //future.get()输出的是call()返回的值,
+                // 线程只有在call()有了返回值才会继续执行
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
         }
-        return null;
+        return MultiFileMergeUtil.multiFileMerge(savePath, novel.getName(), true);
     }
 
     class DownloadThread implements Callable<String> {
         private List<Chapter> list;
         private String path;
+        private Integer tryTimes;
 
-        public DownloadThread(List<Chapter> list, String path) {
+        public DownloadThread(List<Chapter> list, String path, Integer tryTimes) {
             this.list = list;
             this.path = path;
+            this.tryTimes = tryTimes;
         }
 
         @Override
         public String call() throws Exception {
             try (
-                    PrintWriter writer = new PrintWriter(new File(path),"UTF-8")
+                    PrintWriter writer = new PrintWriter(new File(path), "UTF-8")
             ) {
                 for (Chapter chapter : list) {
                     IChapterDetailSpider chapterDetailSpider = ChapterSpiderDetailFactory.getInstanceByUrl(chapter.getUrl());
-                    ChapterDetail detail = chapterDetailSpider.getDetailByUrl(chapter.getUrl());
-                    writer.println(detail.getTitle());
-                    writer.println(detail.getContent());
+                    for (int i = 0; i < tryTimes; i++) {
+                        ChapterDetail detail =null;
+                        try {
+                            detail = chapterDetailSpider.getDetailByUrl(chapter.getUrl());
+                            writer.println(detail.getTitle());
+                            writer.println(detail.getContent());
+                            break;
+                        } catch (Exception e) {
+                            System.err.println("第["+i+"/"+tryTimes+"]次下载:"+chapter.getTitle()+"失败!");
+                        }
+                    }
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);

@@ -1,6 +1,7 @@
 import config.ConfigurationDownload;
 import entity.Chapter;
 import entity.ChapterDetail;
+import entity.Novel;
 import impl.*;
 import interfaces.IChapterDetailSpider;
 import interfaces.IChapterSpider;
@@ -9,6 +10,9 @@ import org.junit.Test;
 import util.MultiFileMergeUtil;
 import util.NovelSpiderHttpGet;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -19,40 +23,76 @@ import java.util.concurrent.ExecutionException;
  */
 public class TestDemo {
     @Test
-    public void testGetChapters(){
+    public void testGetChapters() {
         IChapterSpider spider = new BXWXChapterSpider();
-        List<Chapter> chapters = spider.getsChapter("http://www.bxwx9.org/b/5/5169/index.html");
-        for(Chapter c:chapters){
+        Novel novel = spider.getsChapter("http://www.bxwx9.org/b/5/5169/index.html");
+        System.out.println(novel.getName() + "/书名");
+        for (Chapter c : novel.getList()) {
             System.out.println(c);
         }
     }
+
     @Test
-    public void testGetChapterDetail(){
-        AbstractChapterDetailSpider detailSpider=new DefaultChapterDetailSpider();
+    public void testGetChapterDetail() {
+        AbstractChapterDetailSpider detailSpider = new DefaultChapterDetailSpider();
         //ChapterDetail detail = detailSpider.getDetailByUrl("http://book.zongheng.com/chapter/637210/35372502.html");
         ChapterDetail detail = detailSpider.getDetailByUrl("http://www.bxwx9.org/b/5/5169/7393369.html");
 
         System.out.println(detail.getContent());
     }
+
     @Test
-    public void testBXWXChapterSpider(){
-        IChapterDetailSpider detailSpider=new BXWXChapterSpiderDetail();
+    public void testBXWXChapterSpider() {
+        IChapterDetailSpider detailSpider = new BXWXChapterSpiderDetail();
         ChapterDetail detail = detailSpider.getDetailByUrl("http://www.bxwx9.org/b/5/5169/7393369.html");
         System.out.println(detail.getContent());
     }
+
     @Test
-    public void testDownload(){
+    public void testDownload() {
         IDownloadNoval downlaod = new DownloadNovalImpl();
         ConfigurationDownload config = new ConfigurationDownload();
-        config.setPath("E:/novelSpider/bxwx/frxxz");
         try {
-            downlaod.download("http://www.bxwx9.org/b/5/5169/index.html",config);
-        } catch (ExecutionException |InterruptedException e) {
+            downlaod.download("http://www.bxwx9.org/b/5/5169/index.html", config);
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
     }
+
     @Test
-    public void testMerge(){
-        MultiFileMergeUtil.multiFileMerge("E:/novelSpider/bxwx/frxxz","",false);
+    public void testMerge() {
+        MultiFileMergeUtil.multiFileMerge("E:/novelSpider/bxwx/frxxz", null, false);
+    }
+
+    @Test
+    public void testDemo() {
+        ArrayList<String> list = new ArrayList();
+        list.add("http://www.bxwx9.org/b/5/5169/12204251.html");
+        list.add("http://www.bxwx9.org/b/5/5169/12204249.html");
+        list.add("http://www.bxwx9.org/b/5/5169/7393392.html");
+        Collections.sort(list, new Comparator<String>() {
+            @Override
+            public int compare(String c1, String c2) {
+                //'http://www.bxwx9.org/b/5/5169/7393368.html'
+                //String c1 = c1.getUrl();
+                //String c2 = c2.getUrl();
+                String sub1 = c1.substring(c1.lastIndexOf("/") + 1, c1.lastIndexOf("."));
+                String sub2 = c2.substring(c2.lastIndexOf("/") + 1, c2.lastIndexOf("."));
+
+                int i1 = sub1.hashCode();
+                int i2 = sub2.hashCode();
+                if (i1 > i2) {
+                    return 1;
+                } else if (i1 == i2) {
+                    return 0;
+                } else {
+                    return -1;
+                }
+            }
+        });
+        for (String s : list) {
+            System.out.println(s);
+        }
+
     }
 }
