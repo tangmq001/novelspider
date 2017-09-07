@@ -1,19 +1,21 @@
 import config.ConfigurationDownload;
 import entity.Chapter;
 import entity.ChapterDetail;
-import entity.Novel;
-import impl.*;
-import interfaces.IChapterDetailSpider;
-import interfaces.IChapterSpider;
-import interfaces.IDownloadNoval;
+import entity.Chapters;
+import impl.chapter.BXWXChapterSpider;
+import impl.chapterDetail.AbstractChapterDetailSpider;
+import impl.chapterDetail.BXWXChapterSpiderDetail;
+import impl.chapterDetail.DefaultChapterDetailSpider;
+import impl.download.DownloadNovalImpl;
+import interfaces.chapterDetail.IChapterDetailSpider;
+import interfaces.chapter.IChapterSpider;
+import interfaces.download.IDownloadNoval;
 import org.junit.Test;
 import util.MultiFileMergeUtil;
-import util.NovelSpiderHttpGet;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -25,7 +27,7 @@ public class TestDemo {
     @Test
     public void testGetChapters() {
         IChapterSpider spider = new BXWXChapterSpider();
-        Novel novel = spider.getsChapter("http://www.bxwx9.org/b/5/5169/index.html");
+        Chapters novel = spider.getsChapter("http://www.bxwx9.org/b/5/5169/index.html");
         System.out.println(novel.getName() + "/书名");
         for (Chapter c : novel.getList()) {
             System.out.println(c);

@@ -1,11 +1,11 @@
-package impl;
+package impl.download;
 
 import config.ConfigurationDownload;
 import entity.Chapter;
 import entity.ChapterDetail;
-import entity.Novel;
-import interfaces.IChapterDetailSpider;
-import interfaces.IDownloadNoval;
+import entity.Chapters;
+import interfaces.chapterDetail.IChapterDetailSpider;
+import interfaces.download.IDownloadNoval;
 import util.ChapterSpiderDetailFactory;
 import util.ChapterSpiderFactory;
 import util.MultiFileMergeUtil;
@@ -28,7 +28,7 @@ import java.util.concurrent.*;
 public class DownloadNovalImpl implements IDownloadNoval {
     @Override
     public String download(String url, ConfigurationDownload config) {
-        Novel novel = ChapterSpiderFactory.getInstanceByUrl(url).getsChapter(url);
+        Chapters novel = ChapterSpiderFactory.getInstanceByUrl(url).getsChapter(url);
         List<Chapter> chapters = novel.getList();
         //1 获得章节列表分配给每个线程
         //0-99;100-199...2000-2010

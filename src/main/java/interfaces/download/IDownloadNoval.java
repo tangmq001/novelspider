@@ -1,4 +1,4 @@
-package interfaces;
+package interfaces.download;
 
 import config.ConfigurationDownload;
 

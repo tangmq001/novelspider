@@ -1,15 +1,8 @@
-package impl;
+package impl.chapterDetail;
 
-import entity.Chapter;
-import entity.Novel;
-import interfaces.IChapterSpider;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
+import entity.ChapterDetail;
+import interfaces.chapterDetail.IChapterDetailSpider;
 import org.jsoup.Jsoup;
-import org.jsoup.helper.StringUtil;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
@@ -17,45 +10,40 @@ import org.jsoup.select.Elements;
 import util.SendRequestUtil;
 import util.XmlParseUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @Author:tangmq
- * @Date:2017/8/30
+ * @Date:2017/8/31
  * @Note:
  */
-public abstract class AbstractChapterSpider implements IChapterSpider {
-
+public abstract class AbstractChapterDetailSpider implements IChapterDetailSpider {
     /**
-     * 给url,获得章节列表
+     * 根据url 获得章节详情对象
      *
      * @param url
      * @return
      */
-    public Novel getsChapter(String url) {
-        Novel novel = new Novel();
+    @Override
+    public ChapterDetail getDetailByUrl(String url) {
         try {
+            ChapterDetail detail = new ChapterDetail();
             String result = SendRequestUtil.getInstance().crawl(url, XmlParseUtil.getSiteByUrl(url).get("charset"));
+            result=result.replace("&nbsp;"," ").replace("<br />","${line}").replace("<br/>","${line}");
             Document document = Jsoup.parse(result);
             document.setBaseUri(url);
-            String s = XmlParseUtil.getSiteByUrl(url).get("bookName");
-            novel.setName(getBySelector(document,s).text());
-            Elements els = document.select(XmlParseUtil.getSiteByUrl(url).get("chapter-list-select"));
-            ArrayList<Chapter> chapters = new ArrayList();
-            for (Element e : els) {
-                Chapter chapter = new Chapter();
-                chapter.setTitle(e.text());
-                chapter.setUrl(e.absUrl("href"));
-                chapters.add(chapter);
-            }
-            novel.setList(chapters);
-            return novel;
+            String contSel = XmlParseUtil.getSiteByUrl(url).get("chapter-detail-content-select");
+            detail.setContent(getBySelector(document, contSel).text().replace("${line}","\n"));//存储内容
+            String titSel = XmlParseUtil.getSiteByUrl(url).get("chapter-detail-title-select");
+            detail.setTitle(getBySelector(document, titSel).text());//存储标题
+            String provSel = XmlParseUtil.getSiteByUrl(url).get("chapter-detail-prev-select");
+            detail.setPrev(getBySelector(document, provSel).absUrl("href"));//存储上一页
+            String nextSel = XmlParseUtil.getSiteByUrl(url).get("chapter-detail-next-select");
+            detail.setNext(getBySelector(document, nextSel).absUrl("href"));//存储下一页
+            return detail;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
+
     private String[] parseSelector(String[] strs) {
         String[] strN = new String[2];
         try {
@@ -81,5 +69,4 @@ public abstract class AbstractChapterSpider implements IChapterSpider {
         }
         return p;
     }
-
 }

@@ -1,4 +1,4 @@
-package interfaces;
+package interfaces.chapterDetail;
 
 import entity.Chapter;
 import entity.ChapterDetail;

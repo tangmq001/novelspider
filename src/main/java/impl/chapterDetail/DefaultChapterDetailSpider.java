@@ -1,4 +1,4 @@
-package impl;
+package impl.chapterDetail;
 
 /**
  * @Author:tangmq

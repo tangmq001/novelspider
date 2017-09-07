@@ -1,9 +1,6 @@
-package interfaces;
+package interfaces.chapter;
 
-import entity.Chapter;
-import entity.Novel;
-
-import java.util.List;
+import entity.Chapters;
 
 /**
  * @Author:tangmq
@@ -16,5 +13,5 @@ public interface IChapterSpider {
      * @param url
      * @return
      */
-   Novel getsChapter(String url);
+   Chapters getsChapter(String url);
 }

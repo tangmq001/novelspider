@@ -1,7 +1,7 @@
-package impl;
+package impl.chapterDetail;
 
 import entity.ChapterDetail;
-import interfaces.IChapterDetailSpider;
+import interfaces.chapterDetail.IChapterDetailSpider;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

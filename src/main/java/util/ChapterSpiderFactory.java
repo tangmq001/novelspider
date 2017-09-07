@@ -1,8 +1,8 @@
 package util;
 
-import impl.BXWXChapterSpider;
-import impl.DefaultChapterSpider;
-import interfaces.IChapterSpider;
+import impl.chapter.BXWXChapterSpider;
+import impl.chapter.DefaultChapterSpider;
+import interfaces.chapter.IChapterSpider;
 
 /**
  * Created by 唐明巧 on2017/9/3.

@@ -1,7 +1,7 @@
-package impl;
+package impl.chapter;
 
 import entity.Chapter;
-import entity.Novel;
+import entity.Chapters;
 
 import java.util.*;
 
@@ -12,8 +12,8 @@ import java.util.*;
  */
 public class BXWXChapterSpider extends AbstractChapterSpider {
     @Override
-    public Novel getsChapter(String url) {
-        Novel novel = super.getsChapter(url);
+    public Chapters getsChapter(String url) {
+        Chapters novel = super.getsChapter(url);
         List<Chapter> chapters = novel.getList();
         //根據路徑,判斷章節先後
         Collections.sort(chapters, new Comparator<Chapter>() {
