@@ -130,4 +130,22 @@ public class Novel implements Serializable {
     public void setClickNum(BigDecimal clickNum) {
         this.clickNum = clickNum;
     }
+
+    @Override
+    public String toString() {
+        return "Novel{" +
+                "name='" + name + '\'' +
+                ", url='" + url + '\'' +
+                ", author='" + author + '\'' +
+                ", recentChapter='" + recentChapter + '\'' +
+                ", type='" + type + '\'' +
+                ", recentChapterUrl='" + recentChapterUrl + '\'' +
+                ", wordCount='" + wordCount + '\'' +
+                ", status=" + status +
+                ", lastUpdateTime=" + lastUpdateTime +
+                ", nameFirstChar=" + nameFirstChar +
+                ", siteId=" + siteId +
+                ", clickNum=" + clickNum +
+                '}';
+    }
 }

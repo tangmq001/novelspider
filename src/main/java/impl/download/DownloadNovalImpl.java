@@ -6,8 +6,8 @@ import entity.ChapterDetail;
 import entity.Chapters;
 import interfaces.chapterDetail.IChapterDetailSpider;
 import interfaces.download.IDownloadNoval;
-import util.ChapterSpiderDetailFactory;
-import util.ChapterSpiderFactory;
+import util.factory.ChapterSpiderDetailFactory;
+import util.factory.ChapterSpiderFactory;
 import util.MultiFileMergeUtil;
 import util.SpiderResourceEnum;
 

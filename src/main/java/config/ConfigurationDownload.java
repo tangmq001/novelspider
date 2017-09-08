@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class ConfigurationDownload implements Serializable{
     private static final Integer DEFAULT_DOWNLOAD_SIZE=100;
     private static final Integer DEFAULT_TRY_TIMES=3;
-    private static final String DEFAULT_SAVE_PATH="E:/novelSpider";
+    private static final String DEFAULT_SAVE_PATH="D:/novelSpider";
     private String  path;
     private Integer size;
     private Integer tryTimes;

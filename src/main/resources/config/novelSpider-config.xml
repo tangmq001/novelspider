@@ -35,6 +35,7 @@
         <chapter-detail-prev-select>#footlink a,2</chapter-detail-prev-select>
         <chapter-detail-next-select>#footlink a,4</chapter-detail-next-select>
         <novel-list-select>.grid tr</novel-list-select>
+        <novel-nextPage-select>#pagelink .next</novel-nextPage-select>
     </site>
 
 </sites>

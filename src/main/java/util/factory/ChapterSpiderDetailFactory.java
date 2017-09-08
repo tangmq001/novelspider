@@ -1,8 +1,9 @@
-package util;
+package util.factory;
 
 import impl.chapterDetail.BXWXChapterSpiderDetail;
 import impl.chapterDetail.DefaultChapterDetailSpider;
 import interfaces.chapterDetail.IChapterDetailSpider;
+import util.SpiderResourceEnum;
 
 /**
  * Created by 唐明巧 on2017/9/3.

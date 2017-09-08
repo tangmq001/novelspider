@@ -2,20 +2,24 @@ import config.ConfigurationDownload;
 import entity.Chapter;
 import entity.ChapterDetail;
 import entity.Chapters;
+import entity.Novel;
 import impl.chapter.BXWXChapterSpider;
 import impl.chapterDetail.AbstractChapterDetailSpider;
 import impl.chapterDetail.BXWXChapterSpiderDetail;
 import impl.chapterDetail.DefaultChapterDetailSpider;
 import impl.download.DownloadNovalImpl;
+import impl.novel.BXWXNovelSpider;
 import interfaces.chapterDetail.IChapterDetailSpider;
 import interfaces.chapter.IChapterSpider;
 import interfaces.download.IDownloadNoval;
+import interfaces.novel.INovelSpider;
 import org.junit.Test;
 import util.MultiFileMergeUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -63,7 +67,7 @@ public class TestDemo {
 
     @Test
     public void testMerge() {
-        MultiFileMergeUtil.multiFileMerge("E:/novelSpider/bxwx/frxxz", null, false);
+        MultiFileMergeUtil.multiFileMerge("D:/novelSpider/", null, false);
     }
 
     @Test
@@ -96,5 +100,17 @@ public class TestDemo {
             System.out.println(s);
         }
 
+    }
+    @Test
+    public void testNovelSpider(){
+        INovelSpider spider = new BXWXNovelSpider();
+        try {
+            List<Novel> list = spider.getsNovel("http://www.bxwx9.org/modules/article/index.php?fullflag=1");
+            for (Novel novel : list) {
+                System.out.println(novel);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
