@@ -57,15 +57,6 @@ public class BXWXNovelSpider extends AbstractNovelSpider {
         return list;
     }
 
-    /**
-     * 根据url返回一个迭代器
-     *
-     * @param firstPageUrl
-     */
-    @Override
-    public Iterator<List<Novel>> getIterator(String firstPageUrl) {
-        return null;
-    }
 
     private String fillterUrl(String url) {
         return url.substring(0, url.lastIndexOf(".")).replace("binfo", "b") + "/index.html";

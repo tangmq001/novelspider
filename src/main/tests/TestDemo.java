@@ -16,10 +16,7 @@ import interfaces.novel.INovelSpider;
 import org.junit.Test;
 import util.MultiFileMergeUtil;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -111,6 +108,18 @@ public class TestDemo {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+    @Test
+    public void testIterater(){
+        BXWXNovelSpider spider = new BXWXNovelSpider();
+        Iterator<List<Novel>> iterator = spider.getIterator("http://www.bxwx9.org/modules/article/index.php?fullflag=1");
+        while (iterator.hasNext()){
+            System.out.println(spider.next());
+            List<Novel> next = iterator.next();
+            for (Novel novel : next) {
+                System.out.println(novel);
+            }
         }
     }
 }

@@ -9,6 +9,7 @@ import org.jsoup.select.Elements;
 import util.SendRequestUtil;
 import util.XmlParseUtil;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -38,18 +39,24 @@ public abstract class AbstractNovelSpider implements INovelSpider {
         return eles;
     }
 
-    protected boolean hasNext() {
+    private boolean hasNext() {
         return !nextPageUrl.isEmpty();
     }
+    public String next(){return nextPageUrl;}
 
-    protected Elements next() {
-        return selEles(nextPageUrl);
+    /**
+     * 根据url返回一个迭代器
+     *
+     * @param firstPageUrl
+     */
+    @Override
+    public Iterator<List<Novel>> getIterator(String firstPageUrl) {
+        nextPageUrl=firstPageUrl;
+        return new NovelIterator();
     }
 
-    class NovelIterator implements Iterator {
 
-        public NovelIterator() {}
-
+    class NovelIterator implements Iterator<List<Novel>> {
         @Override
         public boolean hasNext() {
             return AbstractNovelSpider.this.hasNext();
@@ -57,7 +64,13 @@ public abstract class AbstractNovelSpider implements INovelSpider {
 
         @Override
         public List<Novel> next() {
-            return getsNovel();
+            List<Novel> novels=null;
+            try {
+                novels= getsNovel(nextPageUrl);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return novels;
         }
     }
 }
